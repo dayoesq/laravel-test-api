@@ -12,6 +12,13 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected const VERIFIED_USER = 1;
+    protected const UNVERIFIED_USER = 0;
+
+    protected const ADMIN_USER = true;
+    protected const REGULAR_USER = false;
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +28,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'verification_token',
+        'admin'
     ];
 
     /**
@@ -31,6 +40,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'verification_token'
     ];
 
     /**
@@ -41,4 +51,34 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Determines wether admin or regular user
+     *
+     * @return boolean
+     */
+    public function isAdmin()
+    {
+        return $this->admin === User::ADMIN_USER;
+    }
+
+    /**
+     * Determines wether user is verified or not
+     *
+     * @return boolean
+     */
+    public function isVerified() 
+    {
+        return $this->verified === User::VERIFIED_USER;
+    }
+
+    /**
+     * Generates random token
+     *
+     * @return string
+     */
+    public static function generateRandomToken()
+    {
+        return bin2hex(random_bytes(10));
+    }
 }
