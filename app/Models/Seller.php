@@ -2,7 +2,8 @@
 
 namespace App;
 
-use App\Product;
+use App\Models\Product;
+use App\Models\User;
 
 
 class Seller extends User

@@ -9,8 +9,8 @@ use App\Transaction;
 
 class Product extends Model
 {
-    protected const AVAILABLE_PRODUCT = 'available';
-    protected const UNAVAILABLE_PRODUCT = 'unavailable';
+    const AVAILABLE_PRODUCT = 'available';
+    const UNAVAILABLE_PRODUCT = 'unavailable';
 
     protected $fillable = [
         'name',
