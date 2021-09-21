@@ -12,11 +12,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected const VERIFIED_USER = 1;
-    protected const UNVERIFIED_USER = 0;
+    const VERIFIED_USER = 1;
+    const UNVERIFIED_USER = 0;
 
-    protected const ADMIN_USER = true;
-    protected const REGULAR_USER = false;
+    const ADMIN_USER = true;
+    const REGULAR_USER = false;
 
 
     /**
@@ -67,7 +67,7 @@ class User extends Authenticatable
      *
      * @return boolean
      */
-    public function isVerified() 
+    public function isVerified()
     {
         return $this->verified === User::VERIFIED_USER;
     }
