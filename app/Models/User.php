@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -17,6 +18,8 @@ class User extends Authenticatable
 
     const ADMIN_USER = true;
     const REGULAR_USER = false;
+
+    protected $table = 'users';
 
 
     /**
@@ -51,23 +54,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    private bool $admin;
+    private int $verified;
 
     /**
-     * Determines wether admin or regular user
+     * Determines whether admin or regular user
      *
      * @return boolean
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->admin === User::ADMIN_USER;
     }
 
     /**
-     * Determines wether user is verified or not
+     * Determines whether user is verified or not
      *
      * @return boolean
      */
-    public function isVerified()
+    public function isVerified(): bool
     {
         return $this->verified === User::VERIFIED_USER;
     }
@@ -76,9 +81,14 @@ class User extends Authenticatable
      * Generates random token
      *
      * @return string
+     * @throws Exception
      */
-    public static function generateRandomToken()
+    public static function generateRandomToken(): string
     {
-        return bin2hex(random_bytes(10));
+       try {
+           return bin2hex(random_bytes(10));
+       } catch (Exception $ex) {
+           return 'Could not generate token ' . $ex;
+       }
     }
 }

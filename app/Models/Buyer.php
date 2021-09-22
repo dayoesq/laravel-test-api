@@ -1,14 +1,13 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 
-use Illuminate\Database\Eloquent\Model\User;
-use App\Transaction;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Buyer extends User
 {
-    public function transactions() 
+    public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
     }

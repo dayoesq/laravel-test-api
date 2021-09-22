@@ -2,9 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
+
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use JetBrains\PhpStorm\ArrayShape;
 
 class ProductFactory extends Factory
 {
@@ -20,7 +22,8 @@ class ProductFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    #[ArrayShape(['name' => "string", 'description' => "string", 'quantity' => "int", 'status' => "mixed", 'image' => "mixed", 'seller_id' => "\Illuminate\Support\HigherOrderCollectionProxy|mixed"])]
+    public function definition(): array
     {
         return [
             'name' => $this->faker->word,

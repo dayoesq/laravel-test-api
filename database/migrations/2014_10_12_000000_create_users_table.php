@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\User;
+use App\Models\User;
 
 class CreateUsersTable extends Migration
 {
@@ -20,8 +20,8 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('admin')->default(User::REGULAR_USER);
-            $table->string('verified')->default(User::UNVERIFIED_USER);
+            $table->boolean('admin')->default(User::REGULAR_USER);
+            $table->integer('verified')->default(User::UNVERIFIED_USER);
             $table->string('verification_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
