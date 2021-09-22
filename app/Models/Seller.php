@@ -1,14 +1,13 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\Models\Product;
-use App\Models\User;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Seller extends User
 {
-    public function products()
+    public function products(): HasMany
     {
         return $this->hasMany(Product::class);
     }

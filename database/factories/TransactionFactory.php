@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Seller;
 use App\Models\Transaction;
-use App\Seller;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use JetBrains\PhpStorm\ArrayShape;
 
 class TransactionFactory extends Factory
 {
@@ -21,7 +22,8 @@ class TransactionFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    #[ArrayShape(['quantity' => "int", 'product_id' => "mixed", 'buyer_id' => "\Illuminate\Support\HigherOrderCollectionProxy|mixed"])]
+    public function definition(): array
     {
         $seller = Seller::has('products')->get()->random();
         $buyer = User::all()->except($seller->id)->random();

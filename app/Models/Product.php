@@ -2,13 +2,18 @@
 
 namespace App\Models;
 
+
 use Illuminate\Database\Eloquent\Model;
-use App\Category;
-use App\Seller;
-use App\Transaction;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 class Product extends Model
 {
+    use HasFactory;
+
     const AVAILABLE_PRODUCT = 'available';
     const UNAVAILABLE_PRODUCT = 'unavailable';
 
@@ -21,22 +26,27 @@ class Product extends Model
         'seller_id'
     ];
 
-    public function isAvailable()
+    protected $hidden = [
+        'pivot'
+    ];
+    private string $status;
+
+    public function isAvailable(): bool
     {
         return $this->status === Product::AVAILABLE_PRODUCT;
     }
 
-    public function categories()
+    public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
     }
 
-    public function seller()
+    public function seller(): BelongsTo
     {
         return $this->belongsTo(Seller::class);
     }
 
-    public function transactions()
+    public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
     }

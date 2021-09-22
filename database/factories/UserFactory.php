@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use JetBrains\PhpStorm\ArrayShape;
 
 class UserFactory extends Factory
 {
@@ -19,8 +20,10 @@ class UserFactory extends Factory
      * Define the model's default state.
      *
      * @return array
+     * @throws \Exception
      */
-    public function definition()
+    #[ArrayShape(['name' => "string", 'email' => "string", 'email_verified_at' => "\Illuminate\Support\Carbon", 'password' => "string", 'remember_token' => "string", 'verified' => "mixed", 'verification_token' => "null|string", 'admin' => "mixed"])]
+    public function definition(): array
     {
         return [
             'name' => $this->faker->name(),
@@ -30,16 +33,16 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'verified' => $verified = $this->faker->randomElement([User::VERIFIED_USER, User::UNVERIFIED_USER]),
             'verification_token' => $verified === User::VERIFIED_USER ? null : User::generateRandomToken(),
-            'admin' => $verified = $this->faker->randomElement([User::ADMIN_USER, User::REGULAR_USER]),
+            'admin' => $verified = $this->faker->randomElement([User::ADMIN_USER, User::REGULAR_USER])
         ];
     }
 
     /**
      * Indicate that the model's email address should be unverified.
      *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     * @return Factory
      */
-    public function unverified()
+    public function unverified(): Factory
     {
         return $this->state(function (array $attributes) {
             return [
