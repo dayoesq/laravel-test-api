@@ -31,6 +31,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'verified',
         'verification_token',
         'admin'
     ];
@@ -54,8 +55,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    private bool $admin;
-    private int $verified;
 
     /**
      * Determines whether admin or regular user
@@ -87,8 +86,8 @@ class User extends Authenticatable
     {
        try {
            return bin2hex(random_bytes(10));
-       } catch (Exception $ex) {
-           return 'Could not generate token ' . $ex;
+       } catch (Exception $e) {
+           throw new Exception('Token generation failed' . $e->getMessage(), 500);
        }
     }
 }
