@@ -90,4 +90,20 @@ class User extends Authenticatable
            throw new Exception('Token generation failed' . $e->getMessage(), 500);
        }
     }
+
+    /**
+     * Generates random token
+     *
+     * @return string
+     * @throws Exception
+     */
+    public static function hash_password($password): string
+    {
+        try {
+            return password_hash($password, PASSWORD_DEFAULT, ['cost' => '10']);
+        } catch (Exception) {
+            throw new Exception('Failed to hash password', 500);
+        }
+    }
+
 }
