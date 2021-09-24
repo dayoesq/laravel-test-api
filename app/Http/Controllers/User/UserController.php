@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -40,12 +41,17 @@ class UserController extends Controller
      *
      * @param StoreUserRequest $request
      * @return JsonResponse
+     * @throws Exception
      */
     public function store(StoreUserRequest $request): JsonResponse
     {
         $request->validated();
         $data = $request->all();
-        $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT, ['cost' => 10]);
+        try {
+            $data['password'] = User::hash_password($data['password']);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
         $data['verified'] = User::UNVERIFIED_USER;
         try {
             $data['verification_token'] = User::generateRandomToken();
@@ -66,8 +72,13 @@ class UserController extends Controller
      */
     public function show($id): JsonResponse
     {
-        $user = User::findOrFail($id);
-        if(!$user) return response()->json(['message', 'The requested resource could not be found'], 404);
+        try {
+            $user = User::findOrFail($id);
+        } catch (Exception $e) {
+            if($e instanceof ModelNotFoundException) {
+                return response()->json(['error' => 'Record not found'], 404);
+            }
+        }
         return response()->json(['data', $user], 200);
     }
 
@@ -82,26 +93,23 @@ class UserController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return Response
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
-        //
+        try {
+            $user = User::findOrFail($id);
+            $user->delete();
+        } catch (Exception $e) {
+            if($e instanceof ModelNotFoundException) {
+                return response()->json(['error' => 'Record not found'], 404);
+            }
+        }
+        return response()->json(['data' => null], 200);
     }
 }
