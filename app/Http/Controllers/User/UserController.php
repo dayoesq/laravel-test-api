@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -23,17 +23,7 @@ class UserController extends Controller
     public function index(): JsonResponse
     {
         $users = User::all();
-        return response()->json(['data', $users], 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
+        return $this->showAll($users);
     }
 
     /**
@@ -60,7 +50,7 @@ class UserController extends Controller
         }
         $user = User::create($data);
 
-        return response()->json(['data', $user], 201);
+        return $this->showOne($user, 201);
 
     }
 
@@ -79,7 +69,7 @@ class UserController extends Controller
                 return response()->json(['error' => 'Record not found'], 404);
             }
         }
-        return response()->json(['data', $user], 200);
+        return $this->showOne($user);
     }
 
     /**
@@ -110,6 +100,6 @@ class UserController extends Controller
                 return response()->json(['error' => 'Record not found'], 404);
             }
         }
-        return response()->json(['data' => null], 200);
+        return $this->showOne($user);
     }
 }
