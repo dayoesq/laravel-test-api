@@ -94,6 +94,7 @@ class User extends Authenticatable
     /**
      * Generates random token
      *
+     * @param $password
      * @return string
      * @throws Exception
      */
@@ -105,5 +106,49 @@ class User extends Authenticatable
             throw new Exception('Failed to hash password', 500);
         }
     }
+
+    /**
+     * setter for name attribute
+     *
+     *
+     */
+    protected function setNameAttribute($name)
+    {
+        $this->attributes['name'] = strtolower($name);
+    }
+
+    /**
+     * setter for name attribute
+     *
+     * @param $name
+     * @return string
+     */
+    public function getNameAttribute($name): string
+    {
+        return ucwords($name);
+    }
+
+    /**
+     * setter for email attribute
+     *
+     *
+     */
+    protected function setEmailAttribute($email): void
+    {
+        $this->attributes['email'] = strtolower($email);
+    }
+
+    /**
+     * setter for name attribute
+     *
+     * @param $email
+     * @return string
+     */
+    public function getEmailAttribute($email): string
+    {
+        return $email;
+    }
+
+
 
 }
