@@ -6,11 +6,8 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 
-use Illuminate\Http\Response;
-use Illuminate\Validation\ValidationException;
 
 
 class UserController extends ApiController
@@ -60,27 +57,10 @@ class UserController extends ApiController
      * @param  int  $id
      * @return JsonResponse
      */
-    public function show($id): JsonResponse
+    public function show(int $id): JsonResponse
     {
-        try {
-            $user = User::findOrFail($id);
-        } catch (Exception $e) {
-            if($e instanceof ModelNotFoundException) {
-                return response()->json(['error' => 'Record not found'], 404);
-            }
-        }
+        $user = User::findOrFail($id);
         return $this->showOne($user);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
 
@@ -90,16 +70,9 @@ class UserController extends ApiController
      * @param  int  $id
      * @return JsonResponse
      */
-    public function destroy($id): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
-        try {
-            $user = User::findOrFail($id);
-            $user->delete();
-        } catch (Exception $e) {
-            if($e instanceof ModelNotFoundException) {
-                return response()->json(['error' => 'Record not found'], 404);
-            }
-        }
+        $user = User::findOrFail($id);
         return $this->showOne($user);
     }
 }

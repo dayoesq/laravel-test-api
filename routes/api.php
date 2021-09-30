@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Product\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Buyer\BuyerController;
@@ -48,3 +49,9 @@ Route::resource('transactions', TransactionController::class, ['only' => ['index
 * Users.
 */
 Route::resource('users', UserController::class, ['except' => ['create', 'edit']]);
+
+/**
+* Products.
+*/
+Route::resource('products', ProductController::class, ['only' => ['index']]);
+
