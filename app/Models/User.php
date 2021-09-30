@@ -102,14 +102,13 @@ class User extends Authenticatable
     {
         try {
             return password_hash($password, PASSWORD_DEFAULT, ['cost' => '10']);
-        } catch (Exception) {
+        } catch (Exception $e) {
             throw new Exception('Failed to hash password', 500);
         }
     }
 
     /**
      * setter for name attribute
-     *
      *
      */
     protected function setNameAttribute($name)
