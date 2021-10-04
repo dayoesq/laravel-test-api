@@ -121,7 +121,7 @@ class Handler extends ExceptionHandler
             $errorCode = $exception->errorInfo[1];
 
             if ($errorCode == 1451) {
-                return $this->errorResponse('Cannot remove this resource permanently. It is related with any other resource', 409);
+                return $this->errorResponse('Cannot remove this resource completely - it has other relationship(s)', 409);
             }
         }
 

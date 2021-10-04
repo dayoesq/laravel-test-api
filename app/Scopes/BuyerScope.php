@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BuyerScope implements Scope {
     /**
-     * Implicit biding of the buyer resource to transaction.
+     * Implicit binding of the buyer resource to transaction.
      *
      * @return void
      */

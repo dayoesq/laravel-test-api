@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 class SellerScope implements Scope
 {
     /**
-     * Implicit biding of the seller resource to product.
+     * Implicit binding of the seller resource to product.
      *
      * @return void
      */
