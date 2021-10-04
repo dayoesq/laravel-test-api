@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Transaction\TransactionCategoryController;
+use App\Http\Controllers\Transaction\TransactionSellerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Buyer\BuyerController;
 use App\Http\Controllers\Seller\SellerController;
@@ -49,6 +50,11 @@ Route::resource('transactions', TransactionController::class, ['only' => ['index
  * Transaction categories.
  */
 Route::resource('transactions.categories', TransactionCategoryController::class, ['only' => ['index']]);
+
+/**
+ * Transaction sellers.
+ */
+Route::resource('transactions.sellers', TransactionSellerController::class, ['only' => ['index']]);
 
 /**
 * Users.
