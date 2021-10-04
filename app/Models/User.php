@@ -87,7 +87,7 @@ class User extends Authenticatable
        try {
            return bin2hex(random_bytes(10));
        } catch (Exception $e) {
-           throw new Exception('Token generation failed' . $e->getMessage(), 500);
+           throw new Exception('Token generation failed ' . $e->getMessage(), 500);
        }
     }
 
@@ -103,7 +103,7 @@ class User extends Authenticatable
         try {
             return password_hash($password, PASSWORD_DEFAULT, ['cost' => '10']);
         } catch (Exception $e) {
-            throw new Exception('Failed to hash password', 500);
+            throw new Exception('Failed to hash password ' . $e->getMessage(), 500);
         }
     }
 

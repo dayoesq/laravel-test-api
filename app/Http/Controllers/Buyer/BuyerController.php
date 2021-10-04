@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Buyer;
 
 use App\Http\Controllers\ApiController;
 use App\Models\Buyer;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Exception;
 
 
 class BuyerController extends ApiController
@@ -25,18 +23,11 @@ class BuyerController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Buyer $buyer
      * @return JsonResponse
      */
-    public function show($id): JsonResponse
+    public function show(Buyer $buyer): JsonResponse
     {
-        try {
-            $buyer = Buyer::has('transactions')->findOrFail($id);
-        } catch (Exception $e) {
-            if($e instanceof ModelNotFoundException) {
-                return response()->json(['error' => 'The requested resource could not be found'], 404);
-            }
-        }
         return $this->showOne($buyer);
     }
 

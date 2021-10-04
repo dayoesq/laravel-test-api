@@ -4,16 +4,15 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreUserRequest;
+use Illuminate\Http\JsonResponse;
 use App\Models\User;
 use Exception;
-use Illuminate\Http\JsonResponse;
-
 
 
 class UserController extends ApiController
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the user resource.
      *
      * @return JsonResponse
      */
@@ -24,7 +23,7 @@ class UserController extends ApiController
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created user resource in storage.
      *
      * @param StoreUserRequest $request
      * @return JsonResponse
@@ -52,27 +51,24 @@ class UserController extends ApiController
     }
 
     /**
-     * Display the specified resource.
+     * Display user resource.
      *
-     * @param  int  $id
+     * @param User $user
      * @return JsonResponse
      */
-    public function show(int $id): JsonResponse
+    public function show(User $user): JsonResponse
     {
-        $user = User::findOrFail($id);
         return $this->showOne($user);
     }
 
-
     /**
-     * Remove the specified resource from storage.
+     * Remove user resource from storage.
      *
-     * @param  int  $id
+     * @param User $user
      * @return JsonResponse
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(User $user): JsonResponse
     {
-        $user = User::findOrFail($id);
         return $this->showOne($user);
     }
 }
