@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Buyer\BuyerProductController;
+use App\Http\Controllers\Buyer\BuyerTransactionController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Transaction\TransactionCategoryController;
 use App\Http\Controllers\Transaction\TransactionSellerController;
@@ -30,6 +32,17 @@ use App\Http\Controllers\User\UserController;
 * Buyers.
 */
 Route::resource('buyers', BuyerController::class, ['except' => ['create', 'edit']]);
+
+/**
+ * Buyers transactions.
+ */
+Route::resource('buyers.transactions', BuyerTransactionController::class, ['only' => ['index']]);
+
+/**
+ * Buyers products.
+ */
+Route::resource('buyers.products', BuyerProductController::class, ['only' => ['index']]);
+
 
 /**
 * Sellers.
