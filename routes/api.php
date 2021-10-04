@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\Buyer\BuyerCategoryController;
 use App\Http\Controllers\Buyer\BuyerProductController;
+use App\Http\Controllers\Buyer\BuyerSellerController;
 use App\Http\Controllers\Buyer\BuyerTransactionController;
+use App\Http\Controllers\Category\CategoryProductController;
+use App\Http\Controllers\Category\CategorySellerController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Transaction\TransactionCategoryController;
 use App\Http\Controllers\Transaction\TransactionSellerController;
@@ -29,20 +33,25 @@ use App\Http\Controllers\User\UserController;
 });*/
 
 /**
+ * Users.
+ */
+Route::resource('users', UserController::class, ['except' => ['create', 'edit']]);
+
+/**
 * Buyers.
 */
 Route::resource('buyers', BuyerController::class, ['except' => ['create', 'edit']]);
-
-/**
- * Buyers transactions.
- */
 Route::resource('buyers.transactions', BuyerTransactionController::class, ['only' => ['index']]);
+Route::resource('buyers.products', BuyerProductController::class, ['only' => ['index']]);
+Route::resource('buyers.categories', BuyerCategoryController::class, ['only' => ['index']]);
+Route::resource('buyers.sellers', BuyerSellerController::class, ['only' => ['index']]);
 
 /**
- * Buyers products.
+ * Categories.
  */
-Route::resource('buyers.products', BuyerProductController::class, ['only' => ['index']]);
-
+Route::resource('categories', CategoryController::class, ['except' => ['create', 'edit']]);
+Route::resource('categories.products', CategoryProductController::class, ['only' => ['index']]);
+Route::resource('categories.sellers', CategorySellerController::class, ['only' => ['index']]);
 
 /**
 * Sellers.
@@ -50,29 +59,11 @@ Route::resource('buyers.products', BuyerProductController::class, ['only' => ['i
 Route::resource('sellers', SellerController::class, ['only' => ['index', 'show']]);
 
 /**
-* Categories.
-*/
-Route::resource('categories', CategoryController::class, ['except' => ['create', 'edit']]);
-
-/**
 * Transactions.
 */
 Route::resource('transactions', TransactionController::class, ['only' => ['index', 'show']]);
-
-/**
- * Transaction categories.
- */
 Route::resource('transactions.categories', TransactionCategoryController::class, ['only' => ['index']]);
-
-/**
- * Transaction sellers.
- */
 Route::resource('transactions.sellers', TransactionSellerController::class, ['only' => ['index']]);
-
-/**
-* Users.
-*/
-Route::resource('users', UserController::class, ['except' => ['create', 'edit']]);
 
 /**
 * Products.
