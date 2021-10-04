@@ -10,7 +10,7 @@ use Illuminate\Http\JsonResponse;
 class CategoryProductController extends ApiController
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the product on category resource.
      *
      * @param Category $category
      * @return JsonResponse

@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 class CategorySellerController extends ApiController
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the sellers on category resource.
      *
      * @param Category $category
      * @return JsonResponse
