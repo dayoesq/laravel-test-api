@@ -4,8 +4,10 @@ use App\Http\Controllers\Buyer\BuyerCategoryController;
 use App\Http\Controllers\Buyer\BuyerProductController;
 use App\Http\Controllers\Buyer\BuyerSellerController;
 use App\Http\Controllers\Buyer\BuyerTransactionController;
+use App\Http\Controllers\Category\CategoryBuyerController;
 use App\Http\Controllers\Category\CategoryProductController;
 use App\Http\Controllers\Category\CategorySellerController;
+use App\Http\Controllers\Category\CategoryTransactionController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Transaction\TransactionCategoryController;
 use App\Http\Controllers\Transaction\TransactionSellerController;
@@ -52,7 +54,8 @@ Route::resource('buyers.sellers', BuyerSellerController::class, ['only' => ['ind
 Route::resource('categories', CategoryController::class, ['except' => ['create', 'edit']]);
 Route::resource('categories.products', CategoryProductController::class, ['only' => ['index']]);
 Route::resource('categories.sellers', CategorySellerController::class, ['only' => ['index']]);
-
+Route::resource('categories.transactions', CategoryTransactionController::class, ['only' => ['index']]);
+Route::resource('categories.buyers', CategoryBuyerController::class, ['only' => ['index']]);
 /**
 * Sellers.
 */

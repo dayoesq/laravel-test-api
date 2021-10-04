@@ -10,7 +10,7 @@ use Illuminate\Http\JsonResponse;
 class TransactionSellerController extends ApiController
 {
     /**
-     * Display a listing of the transaction seller resource.
+     * Display a listing of the transactions on the seller resource.
      *
      * @param Transaction $transaction
      * @return JsonResponse
