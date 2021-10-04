@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Product\ProductController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Buyer\BuyerController;
 use App\Http\Controllers\Seller\SellerController;
