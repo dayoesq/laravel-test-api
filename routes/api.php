@@ -37,7 +37,7 @@ Route::resource('sellers', SellerController::class, ['only' => ['index', 'show']
 /**
 * Categories.
 */
-Route::resource('categories', CategoryController::class);
+Route::resource('categories', CategoryController::class, ['except' => ['create', 'edit']]);
 
 /**
 * Transactions.
@@ -52,5 +52,5 @@ Route::resource('users', UserController::class, ['except' => ['create', 'edit']]
 /**
 * Products.
 */
-Route::resource('products', ProductController::class, ['only' => ['index']]);
+Route::resource('products', ProductController::class, ['only' => ['index', 'show']]);
 

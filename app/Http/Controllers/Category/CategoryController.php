@@ -22,7 +22,7 @@ class CategoryController extends ApiController
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created category resource in storage.
      *
      * @param Request $request
      * @return JsonResponse
@@ -34,11 +34,11 @@ class CategoryController extends ApiController
             'description' => 'required'
         ]);
         $category = Category::create($validated);
-        return $this->showOne($category);
+        return $this->showOne($category, 201);
     }
 
     /**
-     * Display the specified resource.
+     * Display the category resource.
      *
      * @param Category $category
      * @return JsonResponse
@@ -49,7 +49,7 @@ class CategoryController extends ApiController
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the category resource in storage.
      *
      * @param Request $request
      * @param Category $category
