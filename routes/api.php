@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Transaction\TransactionCategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Buyer\BuyerController;
 use App\Http\Controllers\Seller\SellerController;
@@ -43,6 +44,11 @@ Route::resource('categories', CategoryController::class, ['except' => ['create',
 * Transactions.
 */
 Route::resource('transactions', TransactionController::class, ['only' => ['index', 'show']]);
+
+/**
+ * Transaction categories.
+ */
+Route::resource('transactions.categories', TransactionCategoryController::class, ['only' => ['index']]);
 
 /**
 * Users.
