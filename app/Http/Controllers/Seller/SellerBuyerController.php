@@ -1,22 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Category;
+namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\ApiController;
-use App\Models\Category;
+use App\Models\Seller;
 use Illuminate\Http\JsonResponse;
 
-class CategoryBuyerController extends ApiController
+
+class SellerBuyerController extends ApiController
 {
     /**
-     * Display a listing of the buyers on the category resource.
+     * Display a listing of the buyers on the seller resource.
      *
-     * @param Category $category
+     * @param Seller $seller
      * @return JsonResponse
      */
-    public function index(Category $category): JsonResponse
+    public function index(Seller $seller): JsonResponse
     {
-        $buyers = $category->products()
+        $buyers = $seller->products()
             ->whereHas('transactions')
             ->with('transactions.buyer')
             ->get()
@@ -27,4 +28,5 @@ class CategoryBuyerController extends ApiController
             ->values();
         return $this->showAll($buyers);
     }
+
 }
