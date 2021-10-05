@@ -10,9 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -66,7 +64,6 @@ class Handler extends ExceptionHandler
     public function render($request, Exception|Throwable $e): JsonResponse
     {
         return $this->handleException($request, $e);
-
     }
 
     /**
@@ -83,9 +80,12 @@ class Handler extends ExceptionHandler
     }
 
     /**
+     * @param $request
+     * @param Exception $exception
+     * @return JsonResponse
      * @throws Throwable
      */
-    public function handleException($request, Exception $exception): Response|JsonResponse|RedirectResponse|\Symfony\Component\HttpFoundation\Response
+    public function handleException($request, Exception $exception): JsonResponse
     {
         if ($exception instanceof ValidationException) {
             return $this->convertValidationExceptionToResponse($exception, $request);
