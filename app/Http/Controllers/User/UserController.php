@@ -72,4 +72,19 @@ class UserController extends ApiController
         $user->delete();
         return $this->showOne($user);
     }
+
+    /**
+     * Verify user account with token.
+     *
+     * @param string $token
+     * @return JsonResponse
+     */
+    public function verify(string $token): JsonResponse
+    {
+        $user = User::where('verification_token', $token)->findOrFail();
+        $user->verified = User::VERIFIED_USER;
+        $user->verification_token = null;
+        $user->save();
+        return $this->showMessage('Your account has been verified');
+    }
 }

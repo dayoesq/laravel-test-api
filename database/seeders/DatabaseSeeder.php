@@ -25,6 +25,12 @@ class DatabaseSeeder extends Seeder
         DB::table('transactions')->truncate();
         DB::table('category_product')->truncate();
 
+        // This prevents event listeners on seeders
+        User::flushEventListeners();
+        Category::flushEventListeners();
+        Product::flushEventListeners();
+        Transaction::flushEventListeners();
+
         User::factory()
             ->count(200)
             ->create();
