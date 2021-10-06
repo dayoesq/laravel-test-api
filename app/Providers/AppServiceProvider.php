@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Mail\UserCreated;
+use App\Mail\UserMailChanged;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
@@ -31,7 +32,15 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         User::created(callback: function ($user){
-            Mail::to($user)->send(new UserCreated($user));
+            retry(5, function() use ($user) {
+                Mail::to($user)->send(new UserCreated($user));
+            }, 100);
+        });
+
+        User::updated(callback: function ($user){
+            if($user->isDirty('email')) {
+                Mail::to($user)->send(new UserMailChanged($user));
+            }
         });
 
         Product::updated(callback: function($product){

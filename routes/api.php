@@ -43,6 +43,7 @@ use App\Http\Controllers\User\UserController;
  */
 Route::resource('users', UserController::class, ['except' => ['create', 'edit']]);
 Route::name('verify')->get('users/verify/{token}', [UserController::class, 'verify']);
+Route::name('resend')->get('users/{user}/resend', [UserController::class, 'resend']);
 
 /**
 * Buyers.
