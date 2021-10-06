@@ -8,6 +8,7 @@ use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SellerProductController extends ApiController
@@ -60,10 +61,7 @@ class SellerProductController extends ApiController
     public function update(Request $request, Seller $seller, Product $product): JsonResponse
     {
         $rules = [
-            'name' => 'required',
-            'description' => 'required',
             'status' => 'in' . Product::UNAVAILABLE_PRODUCT . ',' . Product::UNAVAILABLE_PRODUCT,
-            'image' => 'image'
         ];
         $request->validate($rules);
         $this->checkSeller($seller, $product);
@@ -77,6 +75,10 @@ class SellerProductController extends ApiController
             if($product->isAvailable() && $product->categories()->count() < 1) {
                 return $this->errorResponse('An active product must have at least one category', 409);
             }
+        }
+        if($request->hasFile('image')) {
+            Storage::delete($product->image);
+            $product->image = $request->file('image')->store('');
         }
         if($product->isClean()) {
             return $this->errorResponse('There is nothing to update', 422);
@@ -96,6 +98,7 @@ class SellerProductController extends ApiController
     {
         $this->checkSeller($seller, $product);
         $product->delete();
+        Storage::delete($product->image);
         return $this->showOne($product);
     }
 
@@ -108,7 +111,8 @@ class SellerProductController extends ApiController
      */
     protected function checkSeller(Seller $seller, Product $product)
     {
-        if($seller->id !== $product->seller_id) {
+        if($seller->id !== $product->seller_id)
+        {
            throw new HttpException(422, 'Only the seller of the product can perform this operation');
         }
     }
