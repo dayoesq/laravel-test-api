@@ -4,9 +4,12 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\StoreUserRequest;
+use App\Mail\UserCreated;
 use Illuminate\Http\JsonResponse;
 use App\Models\User;
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 
 class UserController extends ApiController
@@ -51,6 +54,55 @@ class UserController extends ApiController
     }
 
     /**
+     * Update user resource.
+     *
+     * @param Request $request
+     * @param User $user
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function update(Request $request, User $user): JsonResponse
+    {
+        /*$rules = [
+            'email' => 'email|unique:users,email,' . $user->id,
+            'password' => 'min:6|confirmed',
+            'admin' => 'in:' . User::ADMIN_USER . ',' . User::REGULAR_USER,
+        ];*/
+
+        if ($request->has('name')) {
+            $user->name = $request->name;
+        }
+
+        if ($request->has('email') && $user->email != $request->email) {
+            $user->verified = User::UNVERIFIED_USER;
+            $user->verification_token = User::generateRandomToken();
+            $user->email = $request->email;
+        }
+
+        if ($request->has('password')) {
+            $user->password = User::hash_password($request->password);
+        }
+
+        if ($request->has('admin')) {
+            //$this->allowedAdminAction();
+
+            if (!$user->isVerified()) {
+                return $this->errorResponse('Only verified users can modify the admin field', 409);
+            }
+
+            $user->admin = $request->admin;
+        }
+
+        if ($user->isClean()) {
+            return $this->errorResponse('You need to specify a different value to update', 422);
+        }
+
+        $user->save();
+
+        return $this->showOne($user);
+    }
+
+    /**
      * Display user resource.
      *
      * @param User $user
@@ -86,5 +138,23 @@ class UserController extends ApiController
         $user->verification_token = null;
         $user->save();
         return $this->showMessage('Your account has been verified');
+    }
+
+    /**
+     * Resend verification token.
+     *
+     * @param User $user
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function resend(User $user): JsonResponse
+    {
+        if($user->isVerified()) {
+            return $this->errorResponse('This user is already verified', 409);
+        }
+        retry(5, function() use ($user){
+            Mail::to($user)->send(new UserCreated($user));
+        }, 100);
+        return $this->showMessage('A verification token has been sent to your email');
     }
 }
