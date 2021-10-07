@@ -28,9 +28,10 @@ class UserTransformer extends TransformerAbstract
     /**
      * A Fractal transformer.
      *
+     * @param User $user
      * @return array
      */
-    public function transform(User $user)
+    public function transform(User $user): array
     {
         return [
             'identifier' => (int)$user->id,
@@ -38,9 +39,9 @@ class UserTransformer extends TransformerAbstract
             'email' => (string)$user->email,
             'isVerified' => (int)$user->verified,
             'isAdmin' => ($user->admin === 'true'),
-            'creationDate' => $user->created_at,
-            'lastChanged' => $user->updated_at,
-            'deletedDate' => isset($user->deleted_at) ? (string) $user->deleted_at : null
+            'creationDate' => (string)$user->created_at,
+            'lastChanged' => (string)$user->updated_at,
+            'deletedDate' => (string)isset($user->deleted_at) ? (string) $user->deleted_at : null
         ];
     }
 }
