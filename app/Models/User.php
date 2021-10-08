@@ -122,12 +122,11 @@ class User extends Authenticatable
     /**
      * setter for name attribute
      *
-     * @param $name
      * @return string
      */
-    public function getNameAttribute($name): string
+    public function getNameAttribute(): string
     {
-        return ucwords($name);
+        return ucwords($this->attributes['name']);
     }
 
     /**
