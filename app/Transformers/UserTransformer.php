@@ -44,4 +44,25 @@ class UserTransformer extends TransformerAbstract
             'deletedDate' => (string)isset($user->deleted_at) ? (string) $user->deleted_at : null
         ];
     }
+
+    /**
+     * Returns the original attributes on user.
+     *
+     * @param $index
+     * @return string|null
+     */
+    public static function originalAttribute($index): ?string
+    {
+        $attributes = [
+            'identifier' => 'id',
+            'name' => 'name',
+            'email' => 'email',
+            'isVerified' => 'verified',
+            'isAdmin' => 'admin',
+            'creationDate' => 'created_at',
+            'lastChanged' => 'updated_at',
+            'deletedDate' => 'deleted_at'
+        ];
+        return $attributes[$index] ?? null;
+    }
 }

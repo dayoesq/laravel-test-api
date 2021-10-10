@@ -44,6 +44,7 @@ trait ApiResponser
         if($collection->isEmpty()) {
             return $this->successResponse(['data' => $collection], $code);
         }
+        $collection = $this->sortData($collection);
         $transformer = $collection->first()->transformer;
         $collection = $this->transformData($collection, $transformer);
         return $this->successResponse($collection, $code);
@@ -86,6 +87,21 @@ trait ApiResponser
     {
         $transformation = fractal($data, new $transformer);
         return $transformation->toArray();
+    }
+
+    /**
+     * Display response based on the provided query parameter.
+     *
+     * @param Collection $collection
+     * @return Collection
+     */
+    protected function sortData(Collection $collection): Collection
+    {
+        if(request()->has('sort_by')) {
+            $attribute = request()->sort_by;
+            $collection = $collection->sortBy($attribute);
+        }
+        return $collection;
     }
 }
 
