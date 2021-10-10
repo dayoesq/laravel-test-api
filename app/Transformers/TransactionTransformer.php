@@ -43,4 +43,24 @@ class TransactionTransformer extends TransformerAbstract
             'deletedDate' => (string)isset($transaction->deleted_at) ? (string) $transaction->deleted_at : null
         ];
     }
+
+    /**
+     * Returns the original attributes on transaction.
+     *
+     * @param $index
+     * @return string|null
+     */
+    public static function originalAttribute($index): ?string
+    {
+        $attributes = [
+            'identifier' => 'id',
+            'quantity' => 'quantity',
+            'buyer' => 'buyer_id',
+            'product' => 'product_id',
+            'creationDate' => 'created_at',
+            'lastChanged' => 'updated_at',
+            'deletedDate' => 'deleted_at'
+        ];
+        return $attributes[$index] ?? null;
+    }
 }
