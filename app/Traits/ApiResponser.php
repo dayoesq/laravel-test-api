@@ -5,7 +5,10 @@ namespace App\Traits;
 use App\Transformers\BaseTransformer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
 
 trait ApiResponser
 {
@@ -49,7 +52,9 @@ trait ApiResponser
         $transformer = $collection->first()->transformer;
         $collection = $this->filterData($collection, $transformer);
         $collection = $this->sortData($collection, $transformer);
+//        $collection = $this->paginate($collection);
         $collection = $this->transformData($collection, $transformer);
+        $collection = $this->cachedResponse($collection);
         return $this->successResponse($collection, $code);
     }
 
@@ -124,6 +129,50 @@ trait ApiResponser
             $collection = $collection->sortBy($attribute);
         }
         return $collection;
+    }
+
+    /**
+     * Paginate collection based on page numbers.
+     *
+     * @param Collection $collection
+     * @return LengthAwarePaginator
+     */
+    protected function paginate(Collection $collection): LengthAwarePaginator
+    {
+        $rules = [
+            'per_page' => 'integer|min:2|max:50'
+        ];
+        Validator::validate(request()->all(), $rules);
+       $page = LengthAwarePaginator::resolveCurrentPage();
+       $perPage = 15;
+       if(request()->has('per_page')) {
+           $perPage = (int) request()->per_page;
+       }
+       $results = $collection->slice(($page - 1) * $perPage, $perPage)->values();
+       $paginated = new LengthAwarePaginator($results, $collection->count(), $perPage, $page, [
+           'path' => LengthAwarePaginator::resolveCurrentPath(),
+       ]);
+       $paginated->appends(request()->all());
+       return $paginated;
+
+    }
+
+    /**
+     * Cache response for 5 minutes.
+     *
+     * @param Collection $collection
+     * @return Collection
+     */
+    protected function cachedResponse(Collection $collection): Collection
+    {
+        $url = request()->url();
+        $queryParams = request()->query();
+        ksort($queryParams);
+        $queryString = http_build_query($queryParams);
+        $fullUrl = "{$url}?{$queryString}";
+        return Cache::remember($fullUrl, 300, function () use($collection) {
+            return $collection;
+        });
     }
 }
 
