@@ -45,7 +45,9 @@ trait ApiResponser
         if($collection->isEmpty()) {
             return $this->successResponse(['data' => $collection], $code);
         }
+
         $transformer = $collection->first()->transformer;
+        $collection = $this->filterData($collection, $transformer);
         $collection = $this->sortData($collection, $transformer);
         $collection = $this->transformData($collection, $transformer);
         return $this->successResponse($collection, $code);
@@ -88,6 +90,24 @@ trait ApiResponser
     {
         $transformation = fractal($data, new $transformer);
         return $transformation->toArray();
+    }
+
+    /**
+     * Filter data based on query params.
+     *
+     * @param Collection $collection
+     * @param $transformer
+     * @return Collection
+     */
+    protected function filterData(Collection $collection, $transformer): Collection
+    {
+        foreach (request()->query() as $query => $value) {
+            $attribute = $transformer::originalAttribute($query);
+            if(isset($attribute, $value)) {
+                $collection = $collection->where($attribute, $value);
+            }
+        }
+        return $collection;
     }
 
     /**
