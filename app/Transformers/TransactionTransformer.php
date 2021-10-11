@@ -47,10 +47,10 @@ class TransactionTransformer extends TransformerAbstract
     /**
      * Returns the original attributes on transaction.
      *
-     * @param $index
+     * @param string $index
      * @return string|null
      */
-    public static function originalAttribute($index): ?string
+    public static function originalAttribute(string $index): ?string
     {
         $attributes = [
             'identifier' => 'id',
