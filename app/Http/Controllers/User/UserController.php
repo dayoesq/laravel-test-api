@@ -63,12 +63,6 @@ class UserController extends ApiController
      */
     public function update(Request $request, User $user): JsonResponse
     {
-        /*$rules = [
-            'email' => 'email|unique:users,email,' . $user->id,
-            'password' => 'min:6|confirmed',
-            'admin' => 'in:' . User::ADMIN_USER . ',' . User::REGULAR_USER,
-        ];*/
-
         if ($request->has('name')) {
             $user->name = $request->name;
         }
