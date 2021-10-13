@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use App\Transformers\BaseTransformer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -52,9 +51,9 @@ trait ApiResponser
         $transformer = $collection->first()->transformer;
         $collection = $this->filterData($collection, $transformer);
         $collection = $this->sortData($collection, $transformer);
-//        $collection = $this->paginate($collection);
+        //$collection = $this->paginate($collection);
         $collection = $this->transformData($collection, $transformer);
-        $collection = $this->cachedResponse($collection);
+        //$collection = $this->cachedResponse($collection);
         return $this->successResponse($collection, $code);
     }
 
