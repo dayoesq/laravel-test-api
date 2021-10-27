@@ -38,7 +38,7 @@ class UserTransformer extends TransformerAbstract
             'name' => (string)$user->name,
             'email' => (string)$user->email,
             'isVerified' => (int)$user->verified,
-            'isAdmin' => ($user->admin === 'true'),
+            'isAdmin' => ($user->admin === true),
             'creationDate' => (string)$user->created_at,
             'lastChanged' => (string)$user->updated_at,
             'deletedDate' => (string)isset($user->deleted_at) ? (string) $user->deleted_at : null
@@ -48,10 +48,10 @@ class UserTransformer extends TransformerAbstract
     /**
      * Returns the original attributes on user.
      *
-     * @param string $index
+     * @param mixed $index
      * @return string|null
      */
-    public static function originalAttribute(string $index): ?string
+    public static function originalAttribute(mixed $index): ?string
     {
         $attributes = [
             'identifier' => 'id',

@@ -64,10 +64,10 @@ class CategoryTransformer extends TransformerAbstract
     /**
      * Returns the original attributes on category.
      *
-     * @param string $index
+     * @param mixed $index
      * @return string|null
      */
-    public static function originalAttribute(string $index): ?string
+    public static function originalAttribute(mixed $index): ?string
     {
         $attributes = [
             'identifier' => 'id',
