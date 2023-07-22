@@ -111,7 +111,7 @@ class User extends Authenticatable
     }
 
     /**
-     * setter for name attribute
+     * Setter for name attribute
      *
      */
     protected function setNameAttribute($name)
@@ -120,7 +120,7 @@ class User extends Authenticatable
     }
 
     /**
-     * setter for name attribute
+     * Getter for name attribute
      *
      * @return string
      */
@@ -130,7 +130,7 @@ class User extends Authenticatable
     }
 
     /**
-     * setter for email attribute
+     * Setter for email attribute
      *
      *
      */
@@ -140,14 +140,13 @@ class User extends Authenticatable
     }
 
     /**
-     * setter for name attribute
+     * Getter for email attribute
      *
-     * @param $email
      * @return string
      */
-    public function getEmailAttribute($email): string
+    public function getEmailAttribute(): string
     {
-        return $email;
+        return $this->attributes['email'];
     }
 
 }
